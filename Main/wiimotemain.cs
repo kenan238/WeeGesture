@@ -4,8 +4,8 @@ using WiimoteLib; // Make sure to install the WiimoteLib package from NuGet
 
 class WiiMoteMouse
 {
-    private static readonly int screen_width = GetSystemMetrics(0);
-    private static readonly int screen_height = GetSystemMetrics(1);
+    private static readonly int screenWidth = GetSystemMetrics(0);
+    private static readonly int screenHeight = GetSystemMetrics(1);
 
     [DllImport("user32.dll")]
     private static extern bool SetCursorPos(int X, int Y);
@@ -16,7 +16,7 @@ class WiiMoteMouse
     [DllImport("user32.dll")]
     private static extern int GetSystemMetrics(int nIndex);
 
-    static void Main(string[] args)
+    static void Tick()
     {
         var wiimote = new Wiimote();
         wiimote.Connect();
@@ -33,14 +33,14 @@ class WiiMoteMouse
             if (state.IRState.IRSensors[0].Found && state.IRState.IRSensors[1].Found)
             {
                 // Calculate the cursor position based on the IR sensor data
-                int cursor_x = (int)(state.IRState.IRSensors[0].RawPosition.X * screen_width);
-                int cursor_y = (int)(state.IRState.IRSensors[0].RawPosition.Y * screen_height);
+                int curX = (int)(state.IRState.IRSensors[0].RawPosition.X * screenWidth);
+                int curY = (int)(state.IRState.IRSensors[0].RawPosition.Y * screenHeight);
 
                 // Set the cursor position
-                SetCursorPos(cursor_x, cursor_y);
+                SetCursorPos(curX, curY);
 
                 // Simulate a left mouse button click
-                mouse_event(dwFlags: 0x0002, dx: cursor_x, dy: cursor_y, cButtons: 0, dwExtraInfo: 0);
+                mouse_event(dwFlags: 0x0002, dx: curX, dy: curY, cButtons: 0, dwExtraInfo: 0);
             }
         }
     }
